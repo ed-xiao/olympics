@@ -18,20 +18,20 @@ Data visualization on the relationship of GDP and Olympic success through an int
 * Production README
 
 # Wireframes
-![wireframe](wireframe.png)
+![wireframe](./wireframe.png)
 
 # Architecture and Technologies
 * HTML, CSS, JS, D3
 * Data: Gapminder, wikipedia
 
 # Implementation Timeline
-Monday: Get all data
-Tuesday: Learn D3
-Wednesday: Start plotting data
-Thursday: Clean up plotted data for entire timeline
-Friday: Start implementing chart change over time
-Saturday: Have auto-play of time change
-Sunday: Detailed sidebar info on hover
+* Monday: Get all data
+* Tuesday: Learn D3
+* Wednesday: Start plotting data
+* Thursday: Clean up plotted data for entire timeline
+* Friday: Start implementing chart change over time
+* Saturday: Have auto-play of time change
+* Sunday: Detailed sidebar info on hover
 
 # Bonus features
 * On hover show a greyed out path for the country over the entire timeline of the chart
