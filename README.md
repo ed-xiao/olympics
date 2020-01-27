@@ -18,7 +18,7 @@ Data visualization on the relationship of GDP and Olympic success through an int
 * Production README
 
 # Wireframes
-![wireframe](./wireframe.png)
+![wireframe](Wireframe.png)
 
 # Architecture and Technologies
 * HTML, CSS, JS, D3
