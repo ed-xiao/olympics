@@ -4,9 +4,10 @@
 // Germany = combined counts for West Germany, East Germany, United Team of Germany, Germany, Saar
 // Serbia = combined counts for Yugoslavia, Independent Olympic Participants, Serbia and Montenegro
 
+
 document.addEventListener("DOMContentLoaded", function(){
     const root = document.getElementById('root');
-    root.textContent = 'This is new text';
+    // root.textContent = 'This is new text';
     // d3.select("div").style("color", "blue");
 
     // set the dimensions and margins of the graph
@@ -62,9 +63,58 @@ document.addEventListener("DOMContentLoaded", function(){
       .attr("class", "year-label")
     //   .attr("text-anchor", "end")
       .attr("y", height - 24)
-      .attr("x", width - 200)
+      .attr("x", width - 225)
       .text(1896);
 
-    d3.csv("./income_per_person_gdppercapita_ppp_inflation_adjusted.csv", function(gdp) {
+    //works only in livewatch
+    // d3.csv("/data/income_per_person_gdppercapita_ppp_inflation_adjusted.csv", function(gdp) {
+    //     console.log(gdp)
+    // });
+    // d3.array("")
+
+    // didn't work
+    // d3.json("/data/nations.json", function(data) {
+    //     console.log("hello")
+    // });
+
+    // d3.json("/data/nations.json").then(function (data) {
+    //     console.log(data[0]);
+    // });
+
+    Promise.all([
+        // d3.json("/data/nations.json"),
+        d3.csv("/data/income.csv"),
+        d3.csv("/data/population.csv")
+    ]).then(function (data) {
+        // console.log(data[0][0])  // first row of wealth and health data
+        // console.log(data[0][0])  // first row of income
+        // console.log(data[1][0])  // first row of population
+        const incomes = data[0];
+        const populations = data[1];
+        let merged = [];
+
+        incomes.forEach(incomeObj => {
+            let obj = {};
+            obj.income = [];
+            Object.keys(incomeObj).forEach(key => {
+                if (key === "country") {
+                    obj.name = incomeObj[key]
+                } else {
+                    obj.income.push([parseInt(key), parseInt(incomeObj[key])])
+                }
+            })
+            merged.push(obj);
+        })
+        console.log(merged)
+
+        function download(content, fileName, contentType) {
+            var a = document.createElement("a");
+            var file = new Blob([content], { type: contentType });
+            a.href = URL.createObjectURL(file);
+            a.download = fileName;
+            a.click();
+        }
+        download(JSON.stringify(merged), 'json.txt', 'text/plain');
+
     });
 })
