@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     // Add x-axis label.
     svg.append("text")
-        // .attr("class", "x label")
+        .attr("class", "x-label")
         .attr("text-anchor", "middle")
         .attr("x", width/2)
         .attr("y", height + 37)
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function(){
     // Add y-axis label
     svg
       .append("text")
-    //   .attr("class", "y label")
+      .attr("class", "y-label")
       .attr("text-anchor", "middle")
       .attr("y", -47)
       .attr("x", -height/2)
@@ -56,6 +56,15 @@ document.addEventListener("DOMContentLoaded", function(){
       .attr("transform", "rotate(-90)")
       .text("Total Summer Olympic Medal Count");
 
-    // d3.csv("income_per_person_gdppercapita_ppp_inflation_adjusted.csv", function(data) {
-    // });
+    // Add year label
+    var label = svg
+      .append("text")
+      .attr("class", "year-label")
+    //   .attr("text-anchor", "end")
+      .attr("y", height - 24)
+      .attr("x", width - 200)
+      .text(1896);
+
+    d3.csv("./income_per_person_gdppercapita_ppp_inflation_adjusted.csv", function(gdp) {
+    });
 })

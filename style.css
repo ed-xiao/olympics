@@ -1,0 +1,8 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+.year-label {
+    font-size: 100px;
+    font-weight: 500;
+    fill: rgb(204, 204, 204);
+}
