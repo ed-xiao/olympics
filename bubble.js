@@ -83,25 +83,41 @@ document.addEventListener("DOMContentLoaded", function(){
 
     Promise.all([
         // d3.json("/data/nations.json"),
-        d3.csv("/data/income.csv"),
-        d3.csv("/data/population.csv"),
-        d3.json("./combined.json")
+        // d3.csv("/data/income.csv"),
+        // d3.csv("/data/population.csv"),
+        d3.json("/data/combined.json")
     ]).then(function (data) {
-        // console.log(data[0][0])  // first row of wealth and health data
+        console.log(data[0][0])  // first row of combined
+        console.log(data[0][100])  // first row of combined
         // console.log(data[0][0])  // first row of income
         // console.log(data[1][0])  // first row of population
         // console.log(data[2][0])  // first row of combined
-        const incomes = data[0];
-        const populations = data[1];
-        const combined = data[2];
-
-        populations.forEach(popObj => {
-            
-        });
-        console.log(combined[0]);
+        
+        
+        ////// second merging of population data into merged dataset
+        // const combined = data[2];
+        // const populations = data[1];
+        // populations.forEach(popObj => {
+        //     let population = [];
+        //     let country = '';
+        //     Object.keys(popObj).forEach(key => {
+        //         if (key !== "country") {
+        //             population.push([parseInt(key), parseInt(popObj[key])])
+        //         } else {
+        //             country = popObj[key];
+        //         }
+        //     })
+        //     // console.log(population)
+        //     combined.forEach(countryObj => {
+        //         if (countryObj.name === country) {
+        //             countryObj.population = population;
+        //         }
+        //     })
+        // });
 
         //////////////////////////////////
         //   first functions to create first version of combined with only income data
+        // const incomes = data[0];
         // let merged = [];
 
         // incomes.forEach(incomeObj => {
@@ -120,14 +136,14 @@ document.addEventListener("DOMContentLoaded", function(){
 
         //////////////////////////////////////////
         //to download newly created JSON object
-        function download(content, fileName, contentType) {
-            var a = document.createElement("a");
-            var file = new Blob([content], { type: contentType });
-            a.href = URL.createObjectURL(file);
-            a.download = fileName;
-            a.click();
-        }
-        // download(JSON.stringify(merged), 'json.txt', 'text/plain');
+        // function download(content, fileName, contentType) {
+        //     var a = document.createElement("a");
+        //     var file = new Blob([content], { type: contentType });
+        //     a.href = URL.createObjectURL(file);
+        //     a.download = fileName;
+        //     a.click();
+        // }
+        // download(JSON.stringify(combined), 'json.txt', 'text/plain');
 
     });
 })
