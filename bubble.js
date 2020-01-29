@@ -84,29 +84,42 @@ document.addEventListener("DOMContentLoaded", function(){
     Promise.all([
         // d3.json("/data/nations.json"),
         d3.csv("/data/income.csv"),
-        d3.csv("/data/population.csv")
+        d3.csv("/data/population.csv"),
+        d3.json("./combined.json")
     ]).then(function (data) {
         // console.log(data[0][0])  // first row of wealth and health data
         // console.log(data[0][0])  // first row of income
         // console.log(data[1][0])  // first row of population
+        // console.log(data[2][0])  // first row of combined
         const incomes = data[0];
         const populations = data[1];
-        let merged = [];
+        const combined = data[2];
 
-        incomes.forEach(incomeObj => {
-            let obj = {};
-            obj.income = [];
-            Object.keys(incomeObj).forEach(key => {
-                if (key === "country") {
-                    obj.name = incomeObj[key]
-                } else {
-                    obj.income.push([parseInt(key), parseInt(incomeObj[key])])
-                }
-            })
-            merged.push(obj);
-        })
-        console.log(merged)
+        populations.forEach(popObj => {
+            
+        });
+        console.log(combined[0]);
 
+        //////////////////////////////////
+        //   first functions to create first version of combined with only income data
+        // let merged = [];
+
+        // incomes.forEach(incomeObj => {
+        //     let obj = {};
+        //     obj.income = [];
+        //     Object.keys(incomeObj).forEach(key => {
+        //         if (key === "country") {
+        //             obj.name = incomeObj[key]
+        //         } else {
+        //             obj.income.push([parseInt(key), parseInt(incomeObj[key])])
+        //         }
+        //     })
+        //     merged.push(obj);
+        // })
+        // console.log(merged)
+
+        //////////////////////////////////////////
+        //to download newly created JSON object
         function download(content, fileName, contentType) {
             var a = document.createElement("a");
             var file = new Blob([content], { type: contentType });
@@ -114,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function(){
             a.download = fileName;
             a.click();
         }
-        download(JSON.stringify(merged), 'json.txt', 'text/plain');
+        // download(JSON.stringify(merged), 'json.txt', 'text/plain');
 
     });
 })
