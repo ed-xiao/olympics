@@ -1,8 +1,106 @@
 body {
-    font-family: 'Roboto', sans-serif;
+    /* font-family: 'Roboto', sans-serif;*/
+    font-family: "Source Serif Pro",Iowan Old Style,Apple Garamond,Palatino Linotype,Times New Roman,"Droid Serif",Times,serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+    color: #1b1e23;
 }
+
+main {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    /* max-width: 1300px; */
+}
+
+.color-labels {
+    display: flex;
+    /* justify-content: space-evenly; */
+}
+
+.color-labels > div {
+    display: flex;
+    margin-right: 20px;
+}
+
+.color-labels span {
+    margin-left: 5px;
+    font-size: 14px;
+}
+
+.color-africa {
+    height: 15px;
+    width: 15px;
+    background-color: #ff7f0e;
+}
+.color-asia {
+    height: 15px;
+    width: 15px;
+    background-color: #9467bd;
+}
+.color-n-africa {
+    height: 15px;
+    width: 15px;
+    background-color: #8c564b;
+}
+.color-america {
+    height: 15px;
+    width: 15px;
+    background-color: #2ca02c;
+}
+.color-europe {
+    height: 15px;
+    width: 15px;
+    background-color: #1f77b4;
+}
+.color-pacific {
+    height: 15px;
+    width: 15px;
+    background-color: #d62728;
+}
+
 .year-label {
-    font-size: 100px;
-    font-weight: 500;
+    font-size: 150px;
+    font-weight: 400;
     fill: rgb(204, 204, 204);
+}
+
+.slider {
+    display: flex;
+}
+
+#root {
+    display: flex;
+    /* justify-content: center; */
+}
+
+.tooltip {
+    position: absolute;
+    font-size: 12px;
+    width:  auto;
+    height: auto;
+    pointer-events: none;
+    background-color: rgb(225, 225, 225);
+    border: 0.5px solid black;
+    padding: 4px;
+    text-align: center;
+}
+
+h1 {
+    margin-left: 50px;
+    font-size: 2em;
+    color: #333;
+    /* font-weight: 700; */
+    line-height: 1.15;
+    margin-bottom: 0px;
+}
+
+p {
+    margin-left: 50px;
+    max-width: 1000px;
+}
+
+button {
+    width: 60px;
+    margin: 20px;
+    margin-left: 50px;
+    align-self: baseline;
 }

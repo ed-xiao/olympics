@@ -9,12 +9,44 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Olympic Success & Wealth of Nations</h1>
-    <button>Pause</button>
-    <input name="points" id="year-slider" type="range" min="1896" max="2019"
-    value="1896" step="1" style="width: 900px;">
-    <div id='root'></div>
-    <script src="https://d3js.org/d3.v5.js"></script>
+    <main>
+        <h1>Olympic Success & Wealth of Nations</h1>
+        <p>This is a reimagination of a Gapminder visualization made famous by Hans Rosling to show the relationship between income and Olympic success. It shows GDP per capita, PPP & inflation-adjusted in USD (x), 
+        cumulative Summer Olympic medal count (y) and population (area of circle) of 194 nations over the last 123 years, colored by region.</p>
+        <div class="slider">
+            <button>Pause</button>
+            <input name="points" id="year-slider" type="range" min="1896" max="2019"
+            value="1896" step="1" style="width: 300px;">
+        </div>
+        <div class="color-labels">
+            <div>
+                <div class="color-africa"></div>
+                <span>Sub-Saharan Africa</span>
+            </div>
+            <div>
+                <div class="color-asia"></div>
+                <span>South Asia</span>
+            </div>
+            <div>
+                <div class="color-n-africa"></div>
+                <span>Middle East & North Africa</span>
+            </div>
+            <div>
+                <div class="color-america"></div>
+                <span>America</span>
+            </div>
+            <div>
+                <div class="color-europe"></div>
+                <span>Europe & Central Asia</span>
+            </div>
+            <div>
+                <div class="color-pacific"></div>
+                <span>East Asia & Pacific</span>
+            </div>
+        </div>
+        <div id='root'></div>
+    </main>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="bubble.js"></script>
 </body>
 </html>

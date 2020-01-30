@@ -1,20 +1,12 @@
 // import * as d3 from "d3";
 
-// Russia = combined counts for Soviet Union, Russian Empire, Russia, Unified Team
-// Germany = combined counts for West Germany, East Germany, United Team of Germany, Germany, Saar(didn't find)
-// Serbia = combined counts for Yugoslavia, Independent Olympic Participants, Serbia and Montenegro
-// China = Hong Kong
-// Kuwait = Independent Olympic Athletes 
-// UK = Bermuda
-// Sri Lanka = Ceylon
-
 document.addEventListener("DOMContentLoaded", function(){
     // const root = document.getElementById('root');
     // root.textContent = 'This is new text';
     // d3.select("div").style("color", "blue");
 
     // set the dimensions and margins of the graph
-    var margin = {top: 10, right: 20, bottom: 100, left: 100},
+    var margin = {top: 10, right: 20, bottom: 30, left: 50},
         width = 1200 - margin.left - margin.right,
         height = 650 - margin.top - margin.bottom;
 
@@ -28,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     // Add X axis
     // var xAxis = d3.scaleLinear()
-    var xAxis = d3.scaleLog([200, 2e5], [0, width])
+    var xAxis = d3.scaleLog([200, 4e5], [0, width])
         // .ticks(12, d3.format(",d"))  //doesn't work
         // .domain([0, 100000])
         // .range([ 0, width ]);
@@ -37,12 +29,16 @@ document.addEventListener("DOMContentLoaded", function(){
         .call(d3.axisBottom(xAxis).ticks(width / 80, ","));
 
     // Add Y axis
-    var yAxis = d3.scaleLinear()
-        // .domain([0, 3000])
-        .domain([0, 2000000000])
+    // var yAxis = d3.scaleLinear()
+    var yAxis = d3.scaleSqrt()
+    // var yAxis = d3.scaleLog([0, 3000], [height, 0])
+        .domain([-25, 3000])
         .range([ height, 0]);
+        // .domain([200, 1000])
+        // .range([ height, 0]);
     svg.append("g")
         .call(d3.axisLeft(yAxis));
+        // ticks(height / 80, ",")
 
     // Add x-axis label
     svg.append("text")
@@ -50,6 +46,7 @@ document.addEventListener("DOMContentLoaded", function(){
         .attr("text-anchor", "end")
         .attr("x", width)
         .attr("y", height - 5)
+        .attr("color", "#1b1e23")
         .text("GDP per capita, PPP & inflation-adjusted (USD)");
 
     // Add y-axis label
@@ -68,8 +65,8 @@ document.addEventListener("DOMContentLoaded", function(){
       .append("text")
       .attr("class", "year-label")
     //   .attr("text-anchor", "end")
-      .attr("y", height - 24)
-      .attr("x", width - 225)
+      .attr("y", height - 50)
+      .attr("x", width - 300)
       .text(1896);
 
     function getValue(values, year) {
@@ -89,70 +86,92 @@ document.addEventListener("DOMContentLoaded", function(){
     bisectYear = d3.bisector(([year]) => year).left
 
     Promise.all([
-        // d3.json("/data/nations.json"),
-        // d3.csv("/data/income.csv"),
-        // d3.csv("/data/population.csv"),
-        d3.json("/data/combined.json"),
-        // d3.csv("/data/country_codes.csv"),
-        d3.csv("olympic_data_copy.csv")
+        d3.json("/data/combined.json")
+        // d3.json("/data/nations.json")
     ]).then(function (data) {
         // console.log(data[0][0])  // first row of combined
-        // console.log(data[0][0])  // first row of income
-        // console.log(data[1])  // first row of population
-        // console.log(data[2][0])  // first row of combined
-        console.log(data[2])
+        console.log(data[0])
         const combined = data[0];
-        const olympic = data[1];
+        // const nations = data[1];
 
-        //find missing countries
-        olympic.forEach(country => {
-            let found = false;
-            combined.forEach(code => {
-                if (country.Nation === code.name) {
-                    found = true;
-                }
-            })
-            if (found === false) {
-                console.log(country.Nation)
-            }
-        })
+        var tooltip = d3.select('#root')
+            .append("div")
+            .style("opacity", 0)
+            .attr("class", "tooltip")
+            // .style("background-color", "white")
+            // .style("border", "solid")
+            // .style("border-width", "1px")
+            // .style("border-radius", "5px")
+            // .style("padding", "10px")
+
+        // tooltip mouseover event handler
+        var tipMouseover = function (d) {
+            var html = d.name + "<br/>" + "pop: " + d3.format(",.2r")(d.population) + "<br/>" +
+                "income: " + d3.format(",.2r")(d.income) + "<br/>" + "medals: " + d3.format(",.2r")(d.medals)
+
+            tooltip.html(html)
+                .style("left", (d3.event.pageX + 15) + "px")
+                .style("top", (d3.event.pageY - 28) + "px")
+                .transition()
+                .duration(200)
+                .style("opacity", .9)
+        };
+
+        var tipMousemove = function (d) {
+            var html = d.name + "<br/>" + "pop: " + d3.format(",.2r")(d.population) + "<br/>" +
+                "income: " + d3.format(",.2r")(d.income) + "<br/>" + "medals: " + d3.format(",.2r")(d.medals)
+
+            tooltip.html(html)
+                .style("left", (d3.event.pageX + 15) + "px")
+                .style("top", (d3.event.pageY - 28) + "px")
+        }
+
+        // tooltip mouseout event handler
+        var tipMouseout = function (d) {
+            tooltip.transition()
+                .duration(300)
+                .style("opacity", 0);
+        };
+
 
         function getData(year) {
             return data[0].map(country => ({
                 name: country.name,
-                // region: country.region,
+                region: country.region,
                 income: getValue(country.income, year),
-                population: getValue(country.population, year)
-                // lifeExpectancy: valueAt(country.lifeExpectancy, year)
+                population: getValue(country.population, year),
+                medals: getValue(country.medals, year)
             }));
         }
 
         // x = d3.scaleLog([200, 1e5], [margin.left, width - margin.right])
         // y = d3.scaleLinear([14, 86], [height - margin.bottom, margin.top])
         radius = d3.scaleSqrt([0, 5e8], [0, width / 24])
+        // color = d3.scaleOrdinal(data.map(d => d.region), d3.schemeCategory10)
+        color = d3.scaleOrdinal(d3.schemeCategory10);
 
-        // svg.append('circle')
-        //     .attr('cx', 100)
-        //     .attr('cy', 100)
-        //     .attr('r', 50)
-        //     .attr('stroke', 'black')
-        //     .attr('fill', '#69a3b2');
-
+        console.log("Europe & Central Asia", color("Europe & Central Asia"));
+        console.log("Sub-Saharan Africa", color("Sub-Saharan Africa"));
+        console.log("America", color("America"));
+        console.log("East Asia & Pacific", color("East Asia & Pacific"));
+        console.log("South Asia", color("South Asia"));
+        console.log("Middle East & North Africa", color("Middle East & North Africa"));
         const circle = svg.append("g")
             .attr("stroke", "black")
             .selectAll("circle")
             .data(getData(1896), d => d.name)
-        .join("circle")
-        .sort((a, b) => d3.descending(a.population, b.population))
-        .attr("cx", d => xAxis(d.income))
-        .attr("cy", d => yAxis(d.population))
-        .attr("r", d => radius(d.population))
-        // .attr("fill", d => color(d.region))
-        .attr("fill", '#69a3b2')
-        .call(circle => circle.append("title")
-        //     .text(d => [d.name, d.region].join("\n")));
-            .text(d => [d.name, d.region].join("\n")));
-        // console.log(circle);
+            .join("circle")
+            .sort((a, b) => d3.descending(a.population, b.population))
+            .attr("cx", d => xAxis(d.income))
+            .attr("cy", d => yAxis(d.medals))
+            .attr("r", d => radius(d.population))
+            .attr("fill", d => color(d.region))
+            .call(circle => circle.append("title"))
+            // .text(d => [d.name, d.region].join("\n")))
+            .on("mouseover", tipMouseover)
+            .on("mouseout", tipMouseout)
+            .on("mousemove", tipMousemove);
+
 
         //update function
         const update = (year) => {
@@ -162,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 .transition()
                 .duration(500)
                 .attr("cx", d => xAxis(d.income))
-                .attr("cy", d => yAxis(d.population))
+                .attr("cy", d => yAxis(d.medals))
                 .attr("r", d => radius(d.population))
             // console.log(yearLabel);
             yearLabel.text(year);
@@ -176,6 +195,7 @@ document.addEventListener("DOMContentLoaded", function(){
         slider.on("mousemove", function () {
             update(this.value);
         })
+
         const updateSlider = () => {
             // console.log(slider.property("value"))
             let currentYear = slider.property("value")
@@ -188,12 +208,17 @@ document.addEventListener("DOMContentLoaded", function(){
         //clear interval after 100 seconds
         setTimeout(clearPlay, 100000)
         const button = d3.select("button");
-        slider.on("click", () => {
+
+        slider.on("mousedown", () => {
             clearPlay();
-            // console.log(d3.select("button").property("innerHTML"))
             button.property("innerHTML","Play")
+            // update(slider.property("value"));
+        });
+
+        slider.on("click", () => {
             update(slider.property("value"));
         });
+
         button.on("click", () => {
             if (button.property("innerHTML") === "Play") {
                 moveSlider = setInterval(updateSlider, 500);
@@ -216,7 +241,82 @@ document.addEventListener("DOMContentLoaded", function(){
         //     .sort(order)
         //     .on("mouseover", fadeChart);	
 
-        //find missing countries
+    });
+})
+
+// Russia = combined counts for Soviet Union, Russian Empire, Russia, Unified Team
+// Germany = combined counts for West Germany, East Germany, United Team of Germany, Germany, Saar(didn't find)
+// Serbia = combined counts for Yugoslavia, Independent Olympic Participants, Serbia and Montenegro
+// China = Hong Kong
+// Kuwait = Independent Olympic Athletes 
+// UK = Bermuda
+// Sri Lanka = Ceylon
+
+// Countries missing in IOC data but in country data
+// Kiribati
+// Marshall Islands
+// Montenegro
+// South Sudan
+// Tuvalu
+
+
+///////// get region data from Nations.json
+// combined.forEach(country => {
+//     let found = false;
+//     nations.forEach(nation => {
+//         if (country.name === nation.name) {
+//             found = true
+//             country.region = nation.region
+//         }
+//     })
+//     if (found === false) {
+//         console.log(country.name)
+//     }
+// })
+
+
+/////// take medal data from Apple Numbers and create a JSON object
+// let result = {};
+// olympic.forEach(medalObj => {
+//     if (!result[medalObj.Nation]) {
+//         result[medalObj.Nation] = []
+//     }
+//     result[medalObj.Nation].push([parseInt(medalObj.Year), parseInt(medalObj.Total)])
+// })
+
+////// merge in JSON object of medal data into combined
+// combined.forEach(country => {
+//     // result[country.name]
+//     country.medals = [];
+//     let totalMedals = 0;
+//     for (let i = 1800; i < 2020; i++) {
+//         if (!result[country.name]) {
+//             country.medals.push([i, 0])
+//         } else {
+//             result[country.name].forEach(medalYear => {
+//                 if (medalYear[0] === i) {
+//                     totalMedals += medalYear[1];
+//                 }
+//             })
+//             country.medals.push([i, totalMedals])
+//         }
+//     }
+// })
+/////////////////
+
+//find missing countries from olympic source
+        // olympic.forEach(country => {
+        //     let found = false;
+        //     combined.forEach(code => {
+        //         if (country.Nation === code.name) {
+        //             found = true;
+        //         }
+        //     })
+        //     if (found === false) {
+        //         console.log(country.Nation)
+        //     }
+        // })
+//find missing countries
         // combined.forEach(country => {
         //     let found = false;
         //     countryCode.forEach(code => {
@@ -228,7 +328,7 @@ document.addEventListener("DOMContentLoaded", function(){
         //         console.log(country.name)
         //     }
         // })
-        
+
         ////// second merging of population data into merged dataset
         // const combined = data[2];
         // const populations = data[1];
@@ -279,13 +379,3 @@ document.addEventListener("DOMContentLoaded", function(){
         //     a.click();
         // }
         // download(JSON.stringify(combined), 'json.txt', 'text/plain');
-
-    });
-})
-
-// Countries missing in IOC data but in country data
-// Kiribati
-// Marshall Islands
-// Montenegro
-// South Sudan
-// Tuvalu
