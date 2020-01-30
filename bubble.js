@@ -1,8 +1,12 @@
 // import * as d3 from "d3";
 
 // Russia = combined counts for Soviet Union, Russian Empire, Russia, Unified Team
-// Germany = combined counts for West Germany, East Germany, United Team of Germany, Germany, Saar
+// Germany = combined counts for West Germany, East Germany, United Team of Germany, Germany, Saar(didn't find)
 // Serbia = combined counts for Yugoslavia, Independent Olympic Participants, Serbia and Montenegro
+// China = Hong Kong
+// Kuwait = Independent Olympic Athletes 
+// UK = Bermuda
+// Sri Lanka = Ceylon
 
 document.addEventListener("DOMContentLoaded", function(){
     // const root = document.getElementById('root');
@@ -30,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function(){
         // .range([ 0, width ]);
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(xAxis));
+        .call(d3.axisBottom(xAxis).ticks(width / 80, ","));
 
     // Add Y axis
     var yAxis = d3.scaleLinear()
@@ -89,14 +93,29 @@ document.addEventListener("DOMContentLoaded", function(){
         // d3.csv("/data/income.csv"),
         // d3.csv("/data/population.csv"),
         d3.json("/data/combined.json"),
-        d3.csv("/data/country_codes.csv")
+        // d3.csv("/data/country_codes.csv"),
+        d3.csv("olympic_data_copy.csv")
     ]).then(function (data) {
-        console.log(data[0][0])  // first row of combined
+        // console.log(data[0][0])  // first row of combined
         // console.log(data[0][0])  // first row of income
         // console.log(data[1])  // first row of population
         // console.log(data[2][0])  // first row of combined
+        console.log(data[2])
         const combined = data[0];
-        const countryCode = data[1];
+        const olympic = data[1];
+
+        //find missing countries
+        olympic.forEach(country => {
+            let found = false;
+            combined.forEach(code => {
+                if (country.Nation === code.name) {
+                    found = true;
+                }
+            })
+            if (found === false) {
+                console.log(country.Nation)
+            }
+        })
 
         function getData(year) {
             return data[0].map(country => ({
@@ -107,8 +126,6 @@ document.addEventListener("DOMContentLoaded", function(){
                 // lifeExpectancy: valueAt(country.lifeExpectancy, year)
             }));
         }
-
-        // console.log(getData(2008));
 
         // x = d3.scaleLog([200, 1e5], [margin.left, width - margin.right])
         // y = d3.scaleLinear([14, 86], [height - margin.bottom, margin.top])
@@ -135,12 +152,10 @@ document.addEventListener("DOMContentLoaded", function(){
         .call(circle => circle.append("title")
         //     .text(d => [d.name, d.region].join("\n")));
             .text(d => [d.name, d.region].join("\n")));
-        console.log(circle);
+        // console.log(circle);
 
         //update function
         const update = (year) => {
-            // let circle = svg.select("g").selectAll("circle")
-            // console.log(circle);
             circle
                 .data(getData(year), d => d.name)
                 .sort((a, b) => d3.descending(a.population, b.population))
@@ -156,16 +171,38 @@ document.addEventListener("DOMContentLoaded", function(){
 
         const slider = d3.select("#year-slider")
 
-        console.log(slider.property("value"))
+        // console.log(slider.property("value"))
         
         slider.on("mousemove", function () {
-            // console.log(this.value);
             update(this.value);
-            // update(parseInt(this.value), 500);
-            // console.log(slider.property("value"))
         })
-
-
+        const updateSlider = () => {
+            // console.log(slider.property("value"))
+            let currentYear = slider.property("value")
+            slider.property("value", parseInt(currentYear)+1);
+            update(slider.property("value"));
+        }
+        //autoplay on load
+        let moveSlider = setInterval(updateSlider, 500);
+        const clearPlay = () => {clearInterval(moveSlider)};
+        //clear interval after 100 seconds
+        setTimeout(clearPlay, 100000)
+        const button = d3.select("button");
+        slider.on("click", () => {
+            clearPlay();
+            // console.log(d3.select("button").property("innerHTML"))
+            button.property("innerHTML","Play")
+            update(slider.property("value"));
+        });
+        button.on("click", () => {
+            if (button.property("innerHTML") === "Play") {
+                moveSlider = setInterval(updateSlider, 500);
+                button.property("innerHTML", "Pause");
+            } else {
+                clearPlay();
+                button.property("innerHTML", "Play");
+            }
+        });
 
         // var dot = svg.append("g")
         //     .attr("class", "dots")
