@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function(){
     bisectYear = d3.bisector(([year]) => year).left
 
     Promise.all([
-        d3.json("./data/combined.json")
+        d3.json("./olympics/data/combined.json")
         // d3.json("/data/nations.json")
     ]).then(function (data) {
         // console.log(data[0][0])  // first row of combined
