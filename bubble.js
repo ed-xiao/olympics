@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function(){
         // d3.json("/data/nations.json")
     ]).then(function (data) {
         // console.log(data[0][0])  // first row of combined
-        console.log(data[0])
+        // console.log(data[0])
         const combined = data[0];
         // const nations = data[1];
 
@@ -150,12 +150,12 @@ document.addEventListener("DOMContentLoaded", function(){
         // color = d3.scaleOrdinal(data.map(d => d.region), d3.schemeCategory10)
         color = d3.scaleOrdinal(d3.schemeCategory10);
 
-        console.log("Europe & Central Asia", color("Europe & Central Asia"));
-        console.log("Sub-Saharan Africa", color("Sub-Saharan Africa"));
-        console.log("America", color("America"));
-        console.log("East Asia & Pacific", color("East Asia & Pacific"));
-        console.log("South Asia", color("South Asia"));
-        console.log("Middle East & North Africa", color("Middle East & North Africa"));
+        // console.log("Europe & Central Asia", color("Europe & Central Asia"));
+        // console.log("Sub-Saharan Africa", color("Sub-Saharan Africa"));
+        // console.log("America", color("America"));
+        // console.log("East Asia & Pacific", color("East Asia & Pacific"));
+        // console.log("South Asia", color("South Asia"));
+        // console.log("Middle East & North Africa", color("Middle East & North Africa"));
         const circle = svg.append("g")
             .attr("stroke", "black")
             .selectAll("circle")
@@ -183,21 +183,17 @@ document.addEventListener("DOMContentLoaded", function(){
                 .attr("cx", d => xAxis(d.income))
                 .attr("cy", d => yAxis(d.medals))
                 .attr("r", d => radius(d.population))
-            // console.log(yearLabel);
             yearLabel.text(year);
             // d3.select("text").text("dataset" + dataIndex);
         }
 
         const slider = d3.select("#year-slider")
 
-        // console.log(slider.property("value"))
-        
         slider.on("mousemove", function () {
             update(this.value);
         })
 
         const updateSlider = () => {
-            // console.log(slider.property("value"))
             let currentYear = slider.property("value")
             slider.property("value", parseInt(currentYear)+1);
             update(slider.property("value"));
