@@ -19,14 +19,18 @@ document.addEventListener("DOMContentLoaded", function(){
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     // Add X axis
-    // var xAxis = d3.scaleLinear()
-    var xAxis = d3.scaleLog([200, 4e5], [0, width])
+    // var xScale = d3.scaleLinear()
+    var xScale = d3.scaleLog([200, 4e5], [0, width])
         // .ticks(12, d3.format(",d"))  //doesn't work
         // .domain([0, 100000])
         // .range([ 0, width ]);
-    svg.append("g")
+    var xAxis = svg.append("g")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(xAxis).ticks(width / 80, ","));
+        .call(d3.axisBottom(xScale).ticks(width / 80, ","));
+
+    ///////// xScale for total GDP
+    var xScale2 = d3.scaleLog([1e6, 1e15], [0, width])
+    /////////////////////////
 
     // Add Y axis
     // var yAxis = d3.scaleLinear()
@@ -70,8 +74,18 @@ document.addEventListener("DOMContentLoaded", function(){
       .text(1896);
 
     function getValue(values, year) {
-        const idx = bisectYear(values, year, 0, values.length - 1);
-        const arr = values[idx];
+        // console.log("values", values)
+        // console.log("year", year)
+        let idx = bisectYear(values, year, 0, values.length - 1);
+
+        ////////
+        // if (!idx || !values[idx]) {
+        //     console.log("no value at idx")
+        //     return 0;
+        // }
+        ////////
+
+        let arr = values[idx];
 
         // data smoothing with weighting if year is not found
         // if (idx > 0) {
@@ -79,6 +93,14 @@ document.addEventListener("DOMContentLoaded", function(){
         //     const t = (year - arr[0]) / (backArray[0] - arr[0]);
         //     return arr[1] * (1 - t) + backArray[1] * t;
         // }
+
+        // total GDP data is incomplete, so grab last known value
+        if (arr[1] === null) {
+            while (idx > 0 && arr[1] === null) {
+                arr = values[idx]
+                idx -= 1
+            }
+        }
         return arr[1];
     }
 
@@ -86,13 +108,51 @@ document.addEventListener("DOMContentLoaded", function(){
     bisectYear = d3.bisector(([year]) => year).left
 
     Promise.all([
-        d3.json("./data/combined.json")
+        d3.json("./combined.json"),
+        d3.csv("./total_gdp.csv")
         // d3.json("/data/nations.json")
     ]).then(function (data) {
         // console.log(data[0][0])  // first row of combined
         // console.log(data[0])
         const combined = data[0];
-        // const nations = data[1];
+        const totalGDP = data[1];
+
+        // merge in total GDP data into combined
+        // totalGDP.forEach(gdpObj => {
+        //     let totalGDP = [];
+        //     let country = '';
+        //     Object.keys(gdpObj).forEach(key => {
+        //         if (key !== "country") {
+        //             totalGDP.push([parseInt(key), parseInt(gdpObj[key])])
+        //         } else {
+        //             country = gdpObj[key];
+        //         }
+        //     })
+        //     combined.forEach(countryObj => {
+        //         if (countryObj.name === country) {
+        //             countryObj.totalGDP = totalGDP;
+        //         }
+        //     })
+        // });
+        // console.log(combined[0])
+
+        // combined.forEach(obj => {
+        //     if (obj.totalGDP === undefined) {
+        //         console.log(obj)
+        //     }
+        // })
+
+        //to download newly created JSON object
+        // function download(content, fileName, contentType) {
+        //     var a = document.createElement("a");
+        //     var file = new Blob([content], { type: contentType });
+        //     a.href = URL.createObjectURL(file);
+        //     a.download = fileName;
+        //     a.click();
+        // }
+        // download(JSON.stringify(combined), 'json.txt', 'text/plain');
+
+
 
         var tooltip = d3.select('#root')
             .append("div")
@@ -135,13 +195,18 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
         function getData(year) {
-            return data[0].map(country => ({
-                name: country.name,
-                region: country.region,
-                income: getValue(country.income, year),
-                population: getValue(country.population, year),
-                medals: getValue(country.medals, year)
-            }));
+            return data[0].map(country => {
+                return(
+                    ({
+                        name: country.name,
+                        region: country.region,
+                        income: getValue(country.income, year),
+                        population: getValue(country.population, year),
+                        medals: getValue(country.medals, year),
+                        totalGDP: getValue(country.totalGDP, year)
+                    })
+                )
+            })
         }
 
         // x = d3.scaleLog([200, 1e5], [margin.left, width - margin.right])
@@ -162,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function(){
             .data(getData(1896), d => d.name)
             .join("circle")
             .sort((a, b) => d3.descending(a.population, b.population))
-            .attr("cx", d => xAxis(d.income))
+            .attr("cx", d => xScale(d.income))
             .attr("cy", d => yAxis(d.medals))
             .attr("r", d => radius(d.population))
             .attr("fill", d => color(d.region))
@@ -172,6 +237,7 @@ document.addEventListener("DOMContentLoaded", function(){
             .on("mouseout", tipMouseout)
             .on("mousemove", tipMousemove);
 
+        var xVar = 'income';
 
         //update function
         const update = (year) => {
@@ -180,9 +246,23 @@ document.addEventListener("DOMContentLoaded", function(){
                 .sort((a, b) => d3.descending(a.population, b.population))
                 .transition()
                 .duration(500)
-                .attr("cx", d => xAxis(d.income))
+                // .attr("cx", d => xScale(d[xVar]))
+                .attr("cx", d => {
+                    // console.log(xScale(d[xVar]))
+                    if (xVar === 'income') {
+                        return (xScale(d[xVar]))
+                    }
+                    if (xVar === 'totalGDP') {
+                        // if (!xScale2(d[xVar])) {
+                        //     console.log("in circle function")
+                        //     console.log(d[xVar])
+                        //     return 1000000
+                        // }
+                        return (xScale2(d[xVar]))
+                    }
+                })
                 .attr("cy", d => yAxis(d.medals))
-                .attr("r", d => radius(d.population))
+                .attr("r", d => radius(d.population));
             yearLabel.text(year);
             // d3.select("text").text("dataset" + dataIndex);
         }
@@ -201,8 +281,8 @@ document.addEventListener("DOMContentLoaded", function(){
         //autoplay on load
         let moveSlider = setInterval(updateSlider, 500);
         const clearPlay = () => {clearInterval(moveSlider)};
-        //clear interval after 100 seconds
-        setTimeout(clearPlay, 100000)
+        //clear interval after 70 seconds
+        setTimeout(clearPlay, 70000)
         const button = d3.select("button");
 
         slider.on("mousedown", () => {
@@ -224,6 +304,23 @@ document.addEventListener("DOMContentLoaded", function(){
                 button.property("innerHTML", "Play");
             }
         });
+
+        const totalGDPRadio = d3.selectAll("input[name='x-axis']");
+        totalGDPRadio.on("change", function () {
+            // console.log(this.value)
+            if (this.value === 'total-GDP') {
+                xVar = 'totalGDP';
+                xAxis.transition().duration(500).call(d3.axisBottom(xScale2).ticks(width / 80, ","));
+            } else {
+                xVar = 'income'
+                xAxis.transition().duration(500).call(d3.axisBottom(xScale).ticks(width / 80, ","));
+            }
+            // var xAxis = svg.append("g")
+            //     .attr("transform", "translate(0," + height + ")")
+            //     .call(d3.axisBottom(xScale).ticks(width / 80, ","));
+            
+            update(slider.property("value"));
+        })
 
         // var dot = svg.append("g")
         //     .attr("class", "dots")
