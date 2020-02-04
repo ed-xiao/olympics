@@ -1,14 +1,62 @@
 body {
     /* font-family: 'Roboto', sans-serif;*/
     font-family: "Source Serif Pro",Iowan Old Style,Apple Garamond,Palatino Linotype,Times New Roman,"Droid Serif",Times,serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
-    color: #1b1e23;
+    /* color: #1b1e23; */
+    color: #163172;
+    background-color: #f6f6f6;
+    margin: 0px;
+}
+
+header {
+    width: 100%;
+    /* border-bottom: 1px solid rgb(204, 204, 204); */
+    border-bottom: 1px solid #d6e4f0;
+    display: flex;
+    justify-content: center;
+}
+
+nav {
+    height: 5rem;
+    display: flex;
+    justify-content: space-between;
+    width: 1200px;
+    align-items: center;
+}
+
+nav img {
+    width: 100px;
+}
+
+.links {
+    margin-left: 2rem;
+}
+
+nav a i {
+    font-size: 40px;
+    /* color: #072063; */
+    /* color: grey; */
+    color: #1e56a0;
+    /* margin-left: 3rem; */
+}
+
+nav div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header {
+    display: flex;
+
+}
+
+img {
+    width: 75px;
 }
 
 main {
     display: flex;
     align-items: center;
     flex-direction: column;
-    /* max-width: 1300px; */
 }
 
 .color-labels {
@@ -60,7 +108,8 @@ main {
 .year-label {
     font-size: 150px;
     font-weight: 400;
-    fill: rgb(204, 204, 204);
+    /* fill: rgb(204, 204, 204); */
+    fill: #b6d3ec;
 }
 
 .slider {
@@ -86,28 +135,30 @@ main {
 
 .radio {
     margin: 10px;
+    margin-bottom: 50px;
 }
 .radio label {
     margin: 10px;
 }
 
 h1 {
-    margin-left: 50px;
+    /* margin-left: 50px; */
     font-size: 2em;
-    color: #333;
+    /* color: #333; */
     /* font-weight: 700; */
     line-height: 1.15;
     margin-bottom: 0px;
 }
 
 p {
-    margin-left: 50px;
+    /* margin-left: 50px; */
     max-width: 1000px;
 }
 
 button {
     width: 60px;
     margin: 20px;
-    margin-left: 50px;
+    /* margin-left: 50px; */
     align-self: baseline;
+    color: inherit;
 }

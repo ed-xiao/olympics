@@ -50,28 +50,29 @@ document.addEventListener("DOMContentLoaded", function(){
         .attr("text-anchor", "end")
         .attr("x", width)
         .attr("y", height - 5)
-        .attr("color", "#1b1e23")
+        .attr("fill", "#1e56a0")
         .text("GDP per capita, PPP & inflation-adjusted (USD)");
 
     // Add y-axis label
     svg
-      .append("text")
-      .attr("class", "y-label")
-      .attr("text-anchor", "end")
-      .attr("y", 20)
-      .attr("x", 0)
+        .append("text")
+        .attr("class", "y-label")
+        .attr("text-anchor", "end")
+        .attr("y", 20)
+        .attr("x", 0)
     //   .attr("dy", ".75em, 1.5em, 2.5em, 3.5em")
-      .attr("transform", "rotate(-90)")
-      .text("Total Summer Olympic Medal Count");
+        .attr("transform", "rotate(-90)")
+        .attr("fill", "#1e56a0")
+        .text("Total Summer Olympic Medal Count");
 
     // Add year label
     var yearLabel = svg
-      .append("text")
-      .attr("class", "year-label")
+        .append("text")
+        .attr("class", "year-label")
     //   .attr("text-anchor", "end")
-      .attr("y", height - 50)
-      .attr("x", width - 300)
-      .text(1896);
+        .attr("y", height - 50)
+        .attr("x", width - 300)
+        .text(1896);
 
     function getValue(values, year) {
         // console.log("values", values)
