@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     // Add X axis
     // var xScale = d3.scaleLinear()
-    var xScale = d3.scaleLog([200, 4e5], [0, width])
+    var xScale = d3.scaleLog([300, 4e5], [0, width])
         // .ticks(12, d3.format(",d"))  //doesn't work
         // .domain([0, 100000])
         // .range([ 0, width ]);
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function(){
         .call(d3.axisBottom(xScale).ticks(width / 80, ","));
 
     ///////// xScale for total GDP
-    var xScale2 = d3.scaleLog([1e6, 1e15], [0, width])
+    var xScale2 = d3.scaleLog([2e6, 3e15], [0, width])
     /////////////////////////
 
     // Add Y axis
