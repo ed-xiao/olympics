@@ -197,3 +197,29 @@ input[type="radio"]:hover {
 label:hover {
     cursor: pointer;
 }
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked + i {
+    /* background: grey; */
+    border-color: rgb(88, 88, 88, 0.7);
+}
+
+label i {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+    border: 2px solid white;
+    /* box-shadow: inset 0 0 0 4px lightblue; */
+    background-color: #b6d3ec;
+    transition: .25s;
+}
+
+label i:hover {
+    border-color: rgb(88, 88, 88, 0.1);
+}
