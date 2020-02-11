@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     // Add X axis
     // var xScale = d3.scaleLinear()
-    var xScale = d3.scaleLog([300, 4e5], [0, width])
+    var xScale = d3.scaleLog([300, 2e5], [0, width])
         // .ticks(12, d3.format(",d"))  //doesn't work
         // .domain([0, 100000])
         // .range([ 0, width ]);
@@ -29,7 +29,8 @@ document.addEventListener("DOMContentLoaded", function(){
         .call(d3.axisBottom(xScale).ticks(width / 80, ","));
 
     ///////// xScale for total GDP
-    var xScale2 = d3.scaleLog([2e6, 3e15], [0, width])
+    // var xScale2 = d3.scaleLog([2e6, 3e14], [0, width])
+    var xScale2 = d3.scaleLog([1.5e6, 3e14], [0, width])
     /////////////////////////
 
     // Add Y axis
@@ -212,7 +213,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
         // x = d3.scaleLog([200, 1e5], [margin.left, width - margin.right])
         // y = d3.scaleLinear([14, 86], [height - margin.bottom, margin.top])
-        radius = d3.scaleSqrt([0, 5e8], [0, width / 24])
+        // radius = d3.scaleSqrt([0, 5e8], [0, width / 24])
+        radius = d3.scaleSqrt([0, 1.45e9], [3.5, width / 12])
         // color = d3.scaleOrdinal(data.map(d => d.region), d3.schemeCategory10)
         color = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -223,7 +225,9 @@ document.addEventListener("DOMContentLoaded", function(){
         // console.log("South Asia", color("South Asia"));
         // console.log("Middle East & North Africa", color("Middle East & North Africa"));
         const circle = svg.append("g")
-            .attr("stroke", "black")
+            // .attr("stroke", "white")
+            .attr("stroke-width", "2px")
+            .attr("opacity", "0.7")
             .selectAll("circle")
             .data(getData(1896), d => d.name)
             .join("circle")
@@ -232,6 +236,7 @@ document.addEventListener("DOMContentLoaded", function(){
             .attr("cy", d => yAxis(d.medals))
             .attr("r", d => radius(d.population))
             .attr("fill", d => color(d.region))
+            .attr("class", "circles")
             .call(circle => circle.append("title"))
             // .text(d => [d.name, d.region].join("\n")))
             .on("mouseover", tipMouseover)
@@ -312,9 +317,11 @@ document.addEventListener("DOMContentLoaded", function(){
             if (this.value === 'total-GDP') {
                 xVar = 'totalGDP';
                 xAxis.transition().duration(500).call(d3.axisBottom(xScale2).ticks(width / 80, ","));
+                d3.select('.x-label').transition().text("Total GDP, PPP & inflation-adjusted (USD)");
             } else {
                 xVar = 'income'
                 xAxis.transition().duration(500).call(d3.axisBottom(xScale).ticks(width / 80, ","));
+                d3.select('.x-label').transition().text("GDP per capita, PPP & inflation-adjusted (USD)");
             }
             // var xAxis = svg.append("g")
             //     .attr("transform", "translate(0," + height + ")")

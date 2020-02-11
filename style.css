@@ -155,10 +155,45 @@ p {
     max-width: 1000px;
 }
 
+.circles {
+    stroke: white;
+}
+
+.circles:hover {
+    stroke: rgb(88, 88, 88);
+}
+
 button {
-    width: 60px;
+    width: 80px;
+    height: 25px;
     margin: 20px;
+    font-size: 12px;
     /* margin-left: 50px; */
     align-self: baseline;
-    color: inherit;
+    /* color: inherit; */
+    color: #1e56a0;
+
+    background-color: #b6d3ec;
+    border-radius: 3px;
+    border: 2px solid white;
+    /* opacity: 0.7; */
+    transition: 0.4s;
+}
+
+button:focus {
+    outline: 0;
+}
+
+button:hover {
+    cursor: pointer;
+    border-color: rgb(88, 88, 88, 0.7);
+    /* opacity: 1; */
+}
+
+input[type="radio"]:hover {
+    cursor: pointer;
+}
+
+label:hover {
+    cursor: pointer;
 }
