@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function(){
         .attr("class", "year-label")
     //   .attr("text-anchor", "end")
         .attr("y", height - 50)
-        .attr("x", width - 300)
+        .attr("x", width - 335)
         .text(1896);
 
     function getValue(values, year) {
