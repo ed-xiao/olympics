@@ -177,13 +177,14 @@ document.addEventListener("DOMContentLoaded", function(){
         radius = d3.scaleSqrt([0, 1.45e9], [3.5, width / 12])
         // color = d3.scaleOrdinal(data.map(d => d.region), d3.schemeCategory10)
         color = d3.scaleOrdinal(d3.schemeCategory10);
-
-        // console.log("Europe & Central Asia", color("Europe & Central Asia"));
-        // console.log("Sub-Saharan Africa", color("Sub-Saharan Africa"));
-        // console.log("America", color("America"));
-        // console.log("East Asia & Pacific", color("East Asia & Pacific"));
-        // console.log("South Asia", color("South Asia"));
-        // console.log("Middle East & North Africa", color("Middle East & North Africa"));
+        // window.setTimeout(() => {
+        //     console.log("Europe & Central Asia", color("Europe & Central Asia"));
+        //     console.log("Sub-Saharan Africa", color("Sub-Saharan Africa"));
+        //     console.log("America", color("America"));
+        //     console.log("East Asia & Pacific", color("East Asia & Pacific"));
+        //     console.log("South Asia", color("South Asia"));
+        //     console.log("Middle East & North Africa", color("Middle East & North Africa"));
+        // }, 5000)
         const circle = svg.append("g")
             // .attr("stroke", "white")
             .attr("stroke-width", "2px")

@@ -83,12 +83,12 @@ main {
 .color-africa {
     height: 15px;
     width: 15px;
-    background-color: #ff7f0e;
+    background-color: #9467bd;
 }
 .color-asia {
     height: 15px;
     width: 15px;
-    background-color: #9467bd;
+    background-color: #ff7f0e;
 }
 .color-n-africa {
     height: 15px;
@@ -103,12 +103,12 @@ main {
 .color-europe {
     height: 15px;
     width: 15px;
-    background-color: #1f77b4;
+    background-color: #d62728;
 }
 .color-pacific {
     height: 15px;
     width: 15px;
-    background-color: #d62728;
+    background-color: #1f77b4;
 }
 
 .year-label {
