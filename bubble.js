@@ -205,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
         var xVar = 'income';
 
-        //update function
+        //update year function
         const update = (year) => {
             circle
                 .data(getData(year), d => d.name)
