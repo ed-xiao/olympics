@@ -48,7 +48,7 @@ var tipMouseout = function (d) {
 };
 ```
 
-* Updating the circle position and size based on the bar value:
+* Updating the circle position and size based on the slider value:
 ```javascript
 //update circles based on input year
 const update = (year) => {
@@ -71,11 +71,11 @@ const update = (year) => {
         }
 ```
 
-* Starting auto-play on page load, adding event handlers to update circles based on bar position, and constructing play/pause button to control auto-play:
+* Starting auto-play on page load, adding event handlers to update circles based on slider position, and constructing play/pause button to control auto-play:
 ```javascript
 const slider = d3.select("#year-slider")
 
-//event handler on play bar to trigger update on circles
+//event handler on play slider to trigger update on circles
 slider.on("mousemove", function () {
     update(this.value);
 })
