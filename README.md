@@ -1,39 +1,30 @@
 # Olympic Success & Wealth of Nations
 
-Interactive bubble chart of relationship between Olympic success and GDP of nations. A reimagination of Gapminder's Wealth & Health of Nations.
+Interactive bubble chart of relationship between Olympic success and GDP of nations since the start of the Modern Olympics. A reimagination of Gapminder's Wealth & Health of Nations.
+
+[Live Link](https://ed-xiao.github.io/olympics/ "Olympic Success")
 
 # Background
 Data visualization on the relationship of GDP and Olympic success through an interactive bubble chart with the below dimensions:
-* x-axis: GDP/capita
-* y-axis: total number of olympic medals
+* x-axis: GDP
+* y-axis: total number of summer Olympic medals
 * size of bubbles: population
-* color: continent
+* color: region
 * the circles on the chart will adjust accordingly by year
 
-# Functionality & MVP
-* See country data visualized by GDP, olympic medals, population, continent.
+![demo](demo.gif)
+
+# Technical Implementation
+* See country data visualized by GDP, Olympic medals, population, continent.
 * Drag a bar to change the chart over time (1900-current).
 * Be able to click play for time to elapse automatically.
 * On hover of nation bubble, show specific GDP and medal count (maybe other olympic data).
-* Production README
-
-# Wireframes
-![wireframe](Wireframe.png)
 
 # Architecture and Technologies
-* HTML, CSS, JS, D3
-* Data: Gapminder, wikipedia
+* HTML, CSS, JS, D3.js
+* Data sourced from: Gapminder, Wikipedia
 
-# Implementation Timeline
-* Monday: Get all data
-* Tuesday: Learn D3
-* Wednesday: Start plotting data
-* Thursday: Clean up plotted data for entire timeline
-* Friday: Start implementing chart change over time
-* Saturday: Have auto-play of time change
-* Sunday: Detailed sidebar info on hover
-
-# Bonus features
+# Future Features
 * On hover show a greyed out path for the country over the entire timeline of the chart
 * Have a sidebar of checkboxes to filter the chart by categories (country, continent, sporting event, etc.)
-* Have a filter to change the x-axis to show another relationship
+* Add additional data points for x-axis and y-axis (winter olympic medals)

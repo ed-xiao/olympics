@@ -39,6 +39,11 @@ nav a i {
     /* margin-left: 3rem; */
 }
 
+nav a i:hover {
+    transform: scale(1.1);
+    transition: 0.3s;
+}
+
 nav div {
     display: flex;
     justify-content: space-between;
