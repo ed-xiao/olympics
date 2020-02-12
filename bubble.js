@@ -110,51 +110,11 @@ document.addEventListener("DOMContentLoaded", function(){
     bisectYear = d3.bisector(([year]) => year).left
 
     Promise.all([
-        d3.json("./combined.json"),
-        d3.csv("./total_gdp.csv")
-        // d3.json("/data/nations.json")
+        d3.json("./combined.json")
+        // d3.csv("./total_gdp.csv")
     ]).then(function (data) {
         // console.log(data[0][0])  // first row of combined
-        // console.log(data[0])
         const combined = data[0];
-        const totalGDP = data[1];
-
-        // merge in total GDP data into combined
-        // totalGDP.forEach(gdpObj => {
-        //     let totalGDP = [];
-        //     let country = '';
-        //     Object.keys(gdpObj).forEach(key => {
-        //         if (key !== "country") {
-        //             totalGDP.push([parseInt(key), parseInt(gdpObj[key])])
-        //         } else {
-        //             country = gdpObj[key];
-        //         }
-        //     })
-        //     combined.forEach(countryObj => {
-        //         if (countryObj.name === country) {
-        //             countryObj.totalGDP = totalGDP;
-        //         }
-        //     })
-        // });
-        // console.log(combined[0])
-
-        // combined.forEach(obj => {
-        //     if (obj.totalGDP === undefined) {
-        //         console.log(obj)
-        //     }
-        // })
-
-        //to download newly created JSON object
-        // function download(content, fileName, contentType) {
-        //     var a = document.createElement("a");
-        //     var file = new Blob([content], { type: contentType });
-        //     a.href = URL.createObjectURL(file);
-        //     a.download = fileName;
-        //     a.click();
-        // }
-        // download(JSON.stringify(combined), 'json.txt', 'text/plain');
-
-
 
         var tooltip = d3.select('#root')
             .append("div")
@@ -469,6 +429,32 @@ document.addEventListener("DOMContentLoaded", function(){
         //     merged.push(obj);
         // })
         // console.log(merged)
+
+
+        //////////////// merge in total GDP data into combined
+        // totalGDP.forEach(gdpObj => {
+        //     let totalGDP = [];
+        //     let country = '';
+        //     Object.keys(gdpObj).forEach(key => {
+        //         if (key !== "country") {
+        //             totalGDP.push([parseInt(key), parseInt(gdpObj[key])])
+        //         } else {
+        //             country = gdpObj[key];
+        //         }
+        //     })
+        //     combined.forEach(countryObj => {
+        //         if (countryObj.name === country) {
+        //             countryObj.totalGDP = totalGDP;
+        //         }
+        //     })
+        // });
+        // console.log(combined[0])
+
+        // combined.forEach(obj => {
+        //     if (obj.totalGDP === undefined) {
+        //         console.log(obj)
+        //     }
+        // })
 
         //////////////////////////////////////////
         //to download newly created JSON object
