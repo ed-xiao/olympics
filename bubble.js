@@ -246,7 +246,7 @@ document.addEventListener("DOMContentLoaded", function(){
             update(slider.property("value"));
         }
         //autoplay on load
-        let moveSlider = setInterval(updateSlider, 500);
+        let moveSlider = setInterval(updateSlider, 400);
         const clearPlay = () => {clearInterval(moveSlider)};
         //clear interval after 70 seconds
         setTimeout(clearPlay, 70000)
