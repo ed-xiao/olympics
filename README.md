@@ -16,7 +16,7 @@ Data visualization on the relationship of GDP and Olympic success through an int
 * color: region
 * the circles on the chart will adjust accordingly by year
 
-![demo](demo.gif)
+![demo](demonstration.gif)
 
 # Technical Implementation
 * Creating a tooltip with detailed information on population, GDP/capita and total summer Olympic medals with a couple of event handlers:
